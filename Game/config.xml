@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <config>
-
+	<modules>
 		<window>
 			<title window_title="Space of Conflict: Origins"/>
 			<width window_width="1024"/>
@@ -12,5 +12,21 @@
 			<resizable w_resizable="true"/>
 			<windowedfullscreen w_wfullscreen="false"/>
 		</window>
-
+		
+		<renderer>
+		
+		</renderer>
+		
+		<textures>
+		
+		</textures>
+		
+		<input>
+		
+		</input>
+		
+		<audio>
+		
+		</audio>
+	</modules>
 </config>

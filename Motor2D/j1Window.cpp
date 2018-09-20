@@ -34,17 +34,30 @@ bool j1Window::Awake()
 		//Create window
 		Uint32 flags = SDL_WINDOW_SHOWN;
 
+		LOG("?????????????????????????????? Window module name: %s", name.GetString());
+		if (App->config_node.child("modules").child(name.GetString()))
+		{
+			window_node = &App->config_node.child("modules").child(name.GetString());
+			LOG("?????????????????????? TESTING / Window node first child should be title: %s", window_node->first_child().name());
+		}	
+		else
+		{
+			window_node = nullptr;
+			LOG("!!!!!!!!!!!!!!!!!!!!!!!! No child found with name: %s", name.GetString());
+		}
+			
+		
 		// TODO 4: Done
-		title = App->config_node.child("window").child("title").attribute("window_title").as_string();
+		title = window_node->child("title").attribute("window_title").as_string();
 
-		width = App->config_node.child("window").child("width").attribute("window_width").as_int();
-		height = App->config_node.child("window").child("height").attribute("window_height").as_int();
-		scale = App->config_node.child("window").child("scale").attribute("window_scale").as_int();
+		width = window_node->child("width").attribute("window_width").as_int();
+		height = window_node->child("height").attribute("window_height").as_int();
+		scale = window_node->child("scale").attribute("window_scale").as_int();
 
-		fullscreen = App->config_node.child("window").child("fullscreen").attribute("w_fullscreen").as_bool();
-		borderless = App->config_node.child("window").child("borderless").attribute("w_borderless").as_bool();
-		resizable = App->config_node.child("window").child("resizable").attribute("w_resizable").as_bool();
-		wfullscreen = App->config_node.child("window").child("windowedfullscreen").attribute("w_wfullscreen").as_bool();
+		fullscreen = window_node->child("fullscreen").attribute("w_fullscreen").as_bool();
+		borderless = window_node->child("borderless").attribute("w_borderless").as_bool();
+		resizable = window_node->child("resizable").attribute("w_resizable").as_bool();
+		wfullscreen = window_node->child("windowedfullscreen").attribute("w_wfullscreen").as_bool();
 		
 
 		if(fullscreen)

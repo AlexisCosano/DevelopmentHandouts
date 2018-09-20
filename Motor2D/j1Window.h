@@ -2,6 +2,7 @@
 #define __j1WINDOW_H__
 
 #include "j1Module.h"
+#include "PugiXml\src\pugixml.hpp"
 
 struct SDL_Window;
 struct SDL_Surface;
@@ -36,6 +37,7 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
+	
 
 private:
 	p2SString	title;
@@ -47,6 +49,8 @@ private:
 	bool        borderless;
 	bool        resizable;
 	bool        wfullscreen;
+
+	pugi::xml_node* window_node = nullptr;
 };
 
 #endif // __j1WINDOW_H__

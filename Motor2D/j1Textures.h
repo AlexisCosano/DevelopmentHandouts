@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "p2List.h"
+#include "PugiXml\src\pugixml.hpp"
 
 struct SDL_Texture;
 struct SDL_Surface;
@@ -34,6 +35,10 @@ public:
 public:
 
 	p2List<SDL_Texture*>	textures;
+
+private:
+
+	pugi::xml_node* textures_node = nullptr;
 };
 
 

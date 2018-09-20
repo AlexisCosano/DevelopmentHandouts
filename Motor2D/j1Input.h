@@ -2,6 +2,7 @@
 #define __j1INPUT_H__
 
 #include "j1Module.h"
+#include "PugiXml\src\pugixml.hpp"
 
 #define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
@@ -77,6 +78,8 @@ private:
 	int			mouse_motion_y;
 	int			mouse_x;
 	int			mouse_y;
+
+	pugi::xml_node* input_node = nullptr;
 };
 
 #endif // __j1INPUT_H__

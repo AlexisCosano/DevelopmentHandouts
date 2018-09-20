@@ -31,24 +31,38 @@ bool j1Audio::Awake()
 		active = false;
 		ret = true;
 	}
-
-	// load support for the JPG and PNG image formats
-	int flags = MIX_INIT_OGG;
-	int init = Mix_Init(flags);
-
-	if((init & flags) != flags)
+	else
 	{
-		LOG("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
-		active = false;
-		ret = true;
-	}
+		LOG("?????????????????????????????? Audio module name: %s", name.GetString());
+		if (App->config_node.child("modules").child(name.GetString()))
+		{
+			audio_node = &App->config_node.child("modules").child(name.GetString());
+			LOG("!!!!!!!!!!!!!!!!!!!!!!!!!! Node %s created.", name.GetString());
+		}
+		else
+		{
+			audio_node = nullptr;
+			LOG("!!!!!!!!!!!!!!!!!!!!!!!! No child found with name: %s", name.GetString());
+		}
 
-	//Initialize SDL_mixer
-	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-	{
-		LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-		active = false;
-		ret = true;
+		// load support for the JPG and PNG image formats
+		int flags = MIX_INIT_OGG;
+		int init = Mix_Init(flags);
+
+		if ((init & flags) != flags)
+		{
+			LOG("Could not initialize Mixer lib. Mix_Init: %s", Mix_GetError());
+			active = false;
+			ret = true;
+		}
+
+		//Initialize SDL_mixer
+		if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		{
+			LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+			active = false;
+			ret = true;
+		}
 	}
 
 	return ret;

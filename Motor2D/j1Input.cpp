@@ -31,6 +31,20 @@ bool j1Input::Awake()
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
+	else
+	{
+		LOG("?????????????????????????????? Input module name: %s", name.GetString());
+		if (App->config_node.child("modules").child(name.GetString()))
+		{
+			input_node = &App->config_node.child("modules").child(name.GetString());
+			LOG("!!!!!!!!!!!!!!!!!!!!!!!!!! Node %s created.", name.GetString());
+		}
+		else
+		{
+			input_node = nullptr;
+			LOG("!!!!!!!!!!!!!!!!!!!!!!!! No child found with name: %s", name.GetString());
+		}
+	}
 
 	return ret;
 }

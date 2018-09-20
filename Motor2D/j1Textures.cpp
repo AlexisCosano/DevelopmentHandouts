@@ -31,6 +31,20 @@ bool j1Textures::Awake()
 		LOG("Could not initialize Image lib. IMG_Init: %s", IMG_GetError());
 		ret = false;
 	}
+	else
+	{
+		LOG("?????????????????????????????? Input module name: %s", name.GetString());
+		if (App->config_node.child("modules").child(name.GetString()))
+		{
+			textures_node = &App->config_node.child("modules").child(name.GetString());
+			LOG("!!!!!!!!!!!!!!!!!!!!!!!!!! Node %s created.", name.GetString());
+		}
+		else
+		{
+			textures_node = nullptr;
+			LOG("!!!!!!!!!!!!!!!!!!!!!!!! No child found with name: %s", name.GetString());
+		}
+	}
 
 	return ret;
 }

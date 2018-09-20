@@ -2,6 +2,7 @@
 #define __j1AUDIO_H__
 
 #include "j1Module.h"
+#include "PugiXml\src\pugixml.hpp"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -36,6 +37,8 @@ private:
 
 	_Mix_Music*			music;
 	p2List<Mix_Chunk*>	fx;
+
+	pugi::xml_node* audio_node = nullptr;
 };
 
 #endif // __j1AUDIO_H__

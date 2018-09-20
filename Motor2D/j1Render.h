@@ -4,6 +4,7 @@
 #include "SDL/include/SDL.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include "PugiXml\src\pugixml.hpp"
 
 class j1Render : public j1Module
 {
@@ -45,6 +46,10 @@ public:
 	SDL_Rect		camera;
 	SDL_Rect		viewport;
 	SDL_Color		background;
+
+private:
+
+	pugi::xml_node* render_node = nullptr;
 };
 
 #endif // __j1RENDER_H__

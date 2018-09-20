@@ -42,6 +42,18 @@ bool j1Render::Awake()
 		camera.h = App->win->screen_surface->h;
 		camera.x = 0;
 		camera.y = 0;
+
+		LOG("?????????????????????????????? Render module name: %s", name.GetString());
+		if (App->config_node.child("modules").child(name.GetString()))
+		{
+			render_node = &App->config_node.child("modules").child(name.GetString());
+			LOG("!!!!!!!!!!!!!!!!!!!!!!!!!! Node %s created.", name.GetString());
+		}
+		else
+		{
+			render_node = nullptr;
+			LOG("!!!!!!!!!!!!!!!!!!!!!!!! No child found with name: %s", name.GetString());
+		}
 	}
 
 	return ret;
