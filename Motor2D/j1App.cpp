@@ -83,12 +83,11 @@ bool j1App::Awake()
 
 	while(item != NULL && ret == true)
 	{
-		// TODO 6: Add a new argument to the Awake method to receive a pointer to a xml node.
-		// If the section with the module name exist in config.xml, fill the pointer with the address of a valid xml_node
-		// that can be used to read all variables from that section. Send nullptr if the section does not exist in config.xml
+		// TODO 6: done
 
-		ret = item->data->Awake(config_node.child(item->data->name.GetString()));
+		ret = item->data->Awake(config_node.child("modules").child(item->data->name.GetString()));
 		item = item->next;
+
 	}
 
 	return ret;

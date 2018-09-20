@@ -13,6 +13,9 @@ j1Render::j1Render() : j1Module()
 	background.g = 0;
 	background.b = 0;
 	background.a = 0;
+
+	camera.x = 0;
+	camera.y = 0;
 }
 
 // Destructor
@@ -20,7 +23,7 @@ j1Render::~j1Render()
 {}
 
 // Called before render is available
-bool j1Render::Awake(pugi::xml_node&)
+bool j1Render::Awake(pugi::xml_node& module_node)
 {
 	LOG("Create SDL rendering context");
 	bool ret = true;
@@ -38,22 +41,11 @@ bool j1Render::Awake(pugi::xml_node&)
 	}
 	else
 	{
-		if (App->config_node.child("modules").child(name.GetString()))
+		render_node = &module_node;
+
+		if (render_node != nullptr)
 		{
-			LOG("============== Creating node %s ==============", name.GetString());
-			render_node = &App->config_node.child("modules").child(name.GetString());
-			LOG("============= Node %s successfully created ============", name.GetString());
-
-
 			// Utilities
-
-			/*
-			camera.w = App->win->screen_surface->w;
-			camera.h = App->win->screen_surface->h;
-			*/
-
-			camera.w = render_node->child("camera_size").attribute("width").as_int();
-			camera.h = render_node->child("camera_size").attribute("height").as_int();
 
 			camera.x = render_node->child("camera_position").attribute("x").as_int();
 			camera.y = render_node->child("camera_position").attribute("y").as_int();
@@ -62,13 +54,11 @@ bool j1Render::Awake(pugi::xml_node&)
 			background.g = render_node->child("background_color").attribute("g").as_uint();
 			background.b = render_node->child("background_color").attribute("b").as_uint();
 			background.a = render_node->child("background_color").attribute("a").as_uint();
+		}
+		
+		camera.w = App->win->screen_surface->w;
+		camera.h = App->win->screen_surface->h;
 
-		}
-		else
-		{
-			render_node = nullptr;
-			LOG("================== No child found with name: %s ==================", name.GetString());
-		}
 	}
 
 	return ret;

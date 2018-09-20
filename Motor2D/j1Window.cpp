@@ -19,7 +19,7 @@ j1Window::~j1Window()
 }
 
 // Called before render is available
-bool j1Window::Awake(pugi::xml_node&)
+bool j1Window::Awake(pugi::xml_node& module_node)
 {
 	LOG("Init SDL window & surface");
 	bool ret = true;
@@ -34,33 +34,22 @@ bool j1Window::Awake(pugi::xml_node&)
 		//Create window
 		Uint32 flags = SDL_WINDOW_SHOWN;
 
-		
-		if (App->config_node.child("modules").child(name.GetString()))
-		{
-			LOG("============== Creating node %s ==============", name.GetString());
-			window_node = &App->config_node.child("modules").child(name.GetString());
-			LOG("============= Node %s successfully created ============", name.GetString());
-			
-		}	
-		else
-		{
-			window_node = nullptr;
-			LOG("================== No child found with name: %s ==================", name.GetString());
-		}
-		//LOG("?????????????????????????????? Window module name: %s", name.GetString());
-		//LOG("?????????????????????? TESTING / Window node first child should be title: %s", window_node->first_child().name());
-		
+		window_node = &module_node;
+
 		// TODO 4: Done
-		title = window_node->child("title").attribute("window_title").as_string();
+		if (window_node != nullptr)
+		{
+			title = window_node->child("title").attribute("window_title").as_string();
 
-		width = window_node->child("width").attribute("window_width").as_int();
-		height = window_node->child("height").attribute("window_height").as_int();
-		scale = window_node->child("scale").attribute("window_scale").as_int();
+			width = window_node->child("width").attribute("window_width").as_int();
+			height = window_node->child("height").attribute("window_height").as_int();
+			scale = window_node->child("scale").attribute("window_scale").as_int();
 
-		fullscreen = window_node->child("fullscreen").attribute("w_fullscreen").as_bool();
-		borderless = window_node->child("borderless").attribute("w_borderless").as_bool();
-		resizable = window_node->child("resizable").attribute("w_resizable").as_bool();
-		wfullscreen = window_node->child("windowedfullscreen").attribute("w_wfullscreen").as_bool();
+			fullscreen = window_node->child("fullscreen").attribute("w_fullscreen").as_bool();
+			borderless = window_node->child("borderless").attribute("w_borderless").as_bool();
+			resizable = window_node->child("resizable").attribute("w_resizable").as_bool();
+			wfullscreen = window_node->child("windowedfullscreen").attribute("w_wfullscreen").as_bool();
+		}
 		
 
 		if(fullscreen)

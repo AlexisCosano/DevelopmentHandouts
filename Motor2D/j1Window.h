@@ -17,7 +17,7 @@ public:
 	virtual ~j1Window();
 
 	// Called before render is available
-	bool Awake(pugi::xml_node&);
+	bool Awake(pugi::xml_node& module_node);
 
 	// Called before quitting
 	bool CleanUp();
@@ -40,17 +40,17 @@ public:
 	
 
 private:
-	p2SString	title;
-	uint		width;
-	uint		height;
-	uint		scale;
+	p2SString	title = "ERROR: Configuration not loaded.";
+	uint		width = 1024;
+	uint		height = 768;
+	uint		scale = 1;
 
-	bool        fullscreen;
-	bool        borderless;
-	bool        resizable;
-	bool        wfullscreen;
+	bool        fullscreen = false;
+	bool        borderless = false;
+	bool        resizable = false;
+	bool        wfullscreen = false;
 
-	pugi::xml_node* window_node = nullptr;
+	pugi::xml_node* window_node;
 };
 
 #endif // __j1WINDOW_H__

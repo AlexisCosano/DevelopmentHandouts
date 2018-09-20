@@ -18,7 +18,7 @@ public:
 	virtual ~j1Textures();
 
 	// Called before render is available
-	bool Awake(pugi::xml_node&);
+	bool Awake(pugi::xml_node& module_node);
 
 	// Called before the first frame
 	bool Start();
