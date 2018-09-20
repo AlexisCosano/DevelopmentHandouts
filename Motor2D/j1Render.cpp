@@ -20,7 +20,7 @@ j1Render::~j1Render()
 {}
 
 // Called before render is available
-bool j1Render::Awake()
+bool j1Render::Awake(pugi::xml_node&)
 {
 	LOG("Create SDL rendering context");
 	bool ret = true;
@@ -38,11 +38,11 @@ bool j1Render::Awake()
 	}
 	else
 	{
-		LOG("?????????????????????????????? Render module name: %s", name.GetString());
 		if (App->config_node.child("modules").child(name.GetString()))
 		{
+			LOG("============== Creating node %s ==============", name.GetString());
 			render_node = &App->config_node.child("modules").child(name.GetString());
-			LOG("!!!!!!!!!!!!!!!!!!!!!!!!!! Node %s created.", name.GetString());
+			LOG("============= Node %s successfully created ============", name.GetString());
 
 
 			// Utilities
@@ -67,7 +67,7 @@ bool j1Render::Awake()
 		else
 		{
 			render_node = nullptr;
-			LOG("!!!!!!!!!!!!!!!!!!!!!!!! No child found with name: %s", name.GetString());
+			LOG("================== No child found with name: %s ==================", name.GetString());
 		}
 	}
 

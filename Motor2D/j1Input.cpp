@@ -20,7 +20,7 @@ j1Input::~j1Input()
 {}
 
 // Called before render is available
-bool j1Input::Awake()
+bool j1Input::Awake(pugi::xml_node&)
 {
 	LOG("Init SDL input event system");
 	bool ret = true;
@@ -33,16 +33,17 @@ bool j1Input::Awake()
 	}
 	else
 	{
-		LOG("?????????????????????????????? Input module name: %s", name.GetString());
 		if (App->config_node.child("modules").child(name.GetString()))
 		{
+			LOG("============== Creating node %s ==============", name.GetString());
 			input_node = &App->config_node.child("modules").child(name.GetString());
-			LOG("!!!!!!!!!!!!!!!!!!!!!!!!!! Node %s created.", name.GetString());
+			LOG("============= Node %s successfully created ============", name.GetString());
+
 		}
 		else
 		{
 			input_node = nullptr;
-			LOG("!!!!!!!!!!!!!!!!!!!!!!!! No child found with name: %s", name.GetString());
+			LOG("================== No child found with name: %s ==================", name.GetString());
 		}
 	}
 

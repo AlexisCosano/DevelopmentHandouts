@@ -58,22 +58,26 @@ void j1App::AddModule(j1Module* module)
 bool j1App::Awake()
 {
 	// TODO 3: Done
+	bool ret = true;
 	pugi::xml_parse_result result = config_document.load_file("config.xml");
 	
 	
 	if (result)
 	{
-		LOG("??????????????????????????????????????????? Load result: %s", result.description());
-		LOG("Document's first child: %s", config_document.first_child().name());
+		LOG("============= Loading document. Load result: %s ============", result.description());
+		LOG("============= Document successfully loaded ============");
+		LOG("==== Document's first child: %s ====", config_document.first_child().name());
 		config_node = config_document.child("config");
-		LOG("Config_node is now: %s", config_node.name());
+		LOG("==== Config_node is now: %s ====", config_node.name());
+
+		ret = result;
 	}
 	else
-		LOG("??????????????????????????????????????????? Load result: %s", result.description());
-	
-
-	bool ret = true;
-
+	{
+		LOG("========== ERROR: document not loaded. Load result: %s =========", result.description());
+		ret = false;
+	}
+		
 	p2List_item<j1Module*>* item;
 	item = modules.start;
 
@@ -83,7 +87,7 @@ bool j1App::Awake()
 		// If the section with the module name exist in config.xml, fill the pointer with the address of a valid xml_node
 		// that can be used to read all variables from that section. Send nullptr if the section does not exist in config.xml
 
-		ret = item->data->Awake();
+		ret = item->data->Awake(config_node.child(item->data->name.GetString()));
 		item = item->next;
 	}
 

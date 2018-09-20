@@ -19,7 +19,7 @@ j1Window::~j1Window()
 }
 
 // Called before render is available
-bool j1Window::Awake()
+bool j1Window::Awake(pugi::xml_node&)
 {
 	LOG("Init SDL window & surface");
 	bool ret = true;
@@ -34,18 +34,21 @@ bool j1Window::Awake()
 		//Create window
 		Uint32 flags = SDL_WINDOW_SHOWN;
 
-		LOG("?????????????????????????????? Window module name: %s", name.GetString());
+		
 		if (App->config_node.child("modules").child(name.GetString()))
 		{
+			LOG("============== Creating node %s ==============", name.GetString());
 			window_node = &App->config_node.child("modules").child(name.GetString());
-			LOG("?????????????????????? TESTING / Window node first child should be title: %s", window_node->first_child().name());
+			LOG("============= Node %s successfully created ============", name.GetString());
+			
 		}	
 		else
 		{
 			window_node = nullptr;
-			LOG("!!!!!!!!!!!!!!!!!!!!!!!! No child found with name: %s", name.GetString());
+			LOG("================== No child found with name: %s ==================", name.GetString());
 		}
-			
+		//LOG("?????????????????????????????? Window module name: %s", name.GetString());
+		//LOG("?????????????????????? TESTING / Window node first child should be title: %s", window_node->first_child().name());
 		
 		// TODO 4: Done
 		title = window_node->child("title").attribute("window_title").as_string();

@@ -18,7 +18,7 @@ j1Textures::~j1Textures()
 {}
 
 // Called before render is available
-bool j1Textures::Awake()
+bool j1Textures::Awake(pugi::xml_node&)
 {
 	LOG("Init Image library");
 	bool ret = true;
@@ -33,16 +33,17 @@ bool j1Textures::Awake()
 	}
 	else
 	{
-		LOG("?????????????????????????????? Input module name: %s", name.GetString());
 		if (App->config_node.child("modules").child(name.GetString()))
 		{
+			LOG("============== Creating node %s ==============", name.GetString());
 			textures_node = &App->config_node.child("modules").child(name.GetString());
-			LOG("!!!!!!!!!!!!!!!!!!!!!!!!!! Node %s created.", name.GetString());
+			LOG("============= Node %s successfully created ============", name.GetString());
+
 		}
 		else
 		{
 			textures_node = nullptr;
-			LOG("!!!!!!!!!!!!!!!!!!!!!!!! No child found with name: %s", name.GetString());
+			LOG("================== No child found with name: %s ==================", name.GetString());
 		}
 	}
 

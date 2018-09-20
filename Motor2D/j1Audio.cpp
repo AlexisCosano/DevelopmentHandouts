@@ -19,7 +19,7 @@ j1Audio::~j1Audio()
 {}
 
 // Called before render is available
-bool j1Audio::Awake()
+bool j1Audio::Awake(pugi::xml_node&)
 {
 	LOG("Loading Audio Mixer");
 	bool ret = true;
@@ -33,11 +33,11 @@ bool j1Audio::Awake()
 	}
 	else
 	{
-		LOG("?????????????????????????????? Audio module name: %s", name.GetString());
 		if (App->config_node.child("modules").child(name.GetString()))
 		{
+			LOG("============== Creating node %s ==============", name.GetString());
 			audio_node = &App->config_node.child("modules").child(name.GetString());
-			LOG("!!!!!!!!!!!!!!!!!!!!!!!!!! Node %s created.", name.GetString());
+			LOG("============= Node %s successfully created ============", name.GetString());
 
 			music_volume = audio_node->child("music").attribute("mvolume").as_uint();
 			music_min_volume = audio_node->child("music").attribute("mminvolume").as_uint();
@@ -50,7 +50,7 @@ bool j1Audio::Awake()
 		else
 		{
 			audio_node = nullptr;
-			LOG("!!!!!!!!!!!!!!!!!!!!!!!! No child found with name: %s", name.GetString());
+			LOG("================== No child found with name: %s ==================", name.GetString());
 		}
 
 		// load support for the JPG and PNG image formats
@@ -191,7 +191,8 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 	if(id > 0 && id <= fx.count())
 	{
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
+		Mix_Volume(-1, fx_volume);
 	}
-
+	
 	return ret;
 }
