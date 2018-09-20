@@ -14,7 +14,7 @@
 		</window>
 		
 		<renderer>
-			<background_color r="0" g="0" b="0" a="0"/>
+			<background_color r="159" g="213" b="220" a="0"/>
 			<camera_position x="0" y="0"/>
 		</renderer>
 			
