@@ -33,6 +33,17 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+public:
+
+	uint fx_min_volume;
+	uint fx_max_volume;
+
+	uint music_min_volume;
+	uint music_max_volume;
+
+	uint music_volume;
+	uint fx_volume;
+
 private:
 
 	_Mix_Music*			music;

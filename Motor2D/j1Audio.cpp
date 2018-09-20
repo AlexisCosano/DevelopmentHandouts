@@ -38,6 +38,14 @@ bool j1Audio::Awake()
 		{
 			audio_node = &App->config_node.child("modules").child(name.GetString());
 			LOG("!!!!!!!!!!!!!!!!!!!!!!!!!! Node %s created.", name.GetString());
+
+			music_volume = audio_node->child("music").attribute("mvolume").as_uint();
+			music_min_volume = audio_node->child("music").attribute("mminvolume").as_uint();
+			music_max_volume = audio_node->child("music").attribute("mmaxvolume").as_uint();
+
+			fx_volume = audio_node->child("fx").attribute("fxvolume").as_uint();
+			fx_min_volume = audio_node->child("fx").attribute("fxminvolume").as_uint();
+			fx_max_volume = audio_node->child("fx").attribute("fxmaxvolume").as_uint();
 		}
 		else
 		{
@@ -145,6 +153,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 	}
 
 	LOG("Successfully playing %s", path);
+	Mix_VolumeMusic(music_volume);
 	return ret;
 }
 

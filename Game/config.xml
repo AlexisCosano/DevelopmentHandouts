@@ -16,17 +16,20 @@
 		<renderer>
 		
 		</renderer>
-		
+			<background_color r="0" g="0" b="0" a="0"/>
+			<camera_position x="0" y="0"/>
+			<camera_size width="0" height="0"/>
 		<textures>
 		
 		</textures>
 		
 		<input>
-		
+			
 		</input>
 		
 		<audio>
-		
+			<music mvolume="50" mminvolume="0" mmaxvolume="100"/>
+			<fx fxvolume="50" fxminvolume="0" fxmaxvolume="100"/>
 		</audio>
 	</modules>
 </config>

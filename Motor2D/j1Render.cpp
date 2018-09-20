@@ -38,16 +38,31 @@ bool j1Render::Awake()
 	}
 	else
 	{
-		camera.w = App->win->screen_surface->w;
-		camera.h = App->win->screen_surface->h;
-		camera.x = 0;
-		camera.y = 0;
-
 		LOG("?????????????????????????????? Render module name: %s", name.GetString());
 		if (App->config_node.child("modules").child(name.GetString()))
 		{
 			render_node = &App->config_node.child("modules").child(name.GetString());
 			LOG("!!!!!!!!!!!!!!!!!!!!!!!!!! Node %s created.", name.GetString());
+
+
+			// Utilities
+
+			/*
+			camera.w = App->win->screen_surface->w;
+			camera.h = App->win->screen_surface->h;
+			*/
+
+			camera.w = render_node->child("camera_size").attribute("width").as_int();
+			camera.h = render_node->child("camera_size").attribute("height").as_int();
+
+			camera.x = render_node->child("camera_position").attribute("x").as_int();
+			camera.y = render_node->child("camera_position").attribute("y").as_int();
+
+			background.r = render_node->child("background_color").attribute("r").as_uint();
+			background.g = render_node->child("background_color").attribute("g").as_uint();
+			background.b = render_node->child("background_color").attribute("b").as_uint();
+			background.a = render_node->child("background_color").attribute("a").as_uint();
+
 		}
 		else
 		{
