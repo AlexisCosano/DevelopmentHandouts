@@ -70,9 +70,9 @@ bool j1Window::Awake()
 			//Get window surface
 			screen_surface = SDL_GetWindowSurface(window);
 
-			// TODO 4: Read the title of the app from the XML
-			// and set directly the window title using SetTitle()
-
+			// TODO 4: Done
+			title = App->config_node.child("window").child("title").attribute("window_title").as_string();
+			SetTitle(title.GetString());
 		}
 	}
 

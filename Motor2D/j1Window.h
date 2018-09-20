@@ -21,7 +21,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	// Changae title
+	// Set window's title
 	void SetTitle(const char* new_title);
 
 	// Retrive window size
