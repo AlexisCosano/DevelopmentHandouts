@@ -4,6 +4,13 @@
 
 		<window>
 			<title window_title="Space of Conflict: Origins"/>
+			<width window_width="1024"/>
+			<height window_height="768"/>
+			<scale window_scale="1"/>
+			<fullscreen w_fullscreen="false"/>
+			<borderless w_borderless="false"/>
+			<resizable w_resizable="true"/>
+			<windowedfullscreen w_wfullscreen="false"/>
 		</window>
 
 </config>
