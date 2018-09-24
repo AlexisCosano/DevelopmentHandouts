@@ -44,6 +44,28 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	// TODO 2(2)
+	// Save & Load ------------------------------------------------------
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+		App->CallSave();
+
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+		App->CallLoad();
+
+	// Move camera ------------------------------------------------------
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		App->render->camera.y -= 1;
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		App->render->camera.y += 1;
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		App->render->camera.x -= 1;
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		App->render->camera.x += 1;
+
 	App->render->Blit(img, 0, 0);
 	return true;
 }
@@ -53,7 +75,7 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(App->input->GetKeyDown(SDLK_ESCAPE) == true)
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
 	return ret;

@@ -236,3 +236,14 @@ const char* j1App::GetArgv(int index) const
 	else
 		return NULL;
 }
+
+// Save & Load ---------------------------
+void j1App::CallSave()
+{
+	LOG("Saving game...");
+}
+
+void j1App::CallLoad()
+{
+	LOG("Loading game...");
+}

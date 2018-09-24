@@ -42,6 +42,13 @@ public:
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
 
+	// TODO 1(2)
+	// Call SaveGame -------------------------------------
+	void CallSave();
+
+	// Call LoadGame -------------------------------------
+	void CallLoad();
+
 private:
 
 	// Call modules before each loop iteration
