@@ -59,6 +59,19 @@ public:
 		return true;
 	}
 
+	// TODO 3(2): done
+	// Save & Load -----------------------------------------------------------
+
+	virtual bool Save()
+	{
+		return(true);
+	}
+
+	virtual bool Load()
+	{
+		return(true);
+	}
+
 public:
 
 	p2SString	name;
