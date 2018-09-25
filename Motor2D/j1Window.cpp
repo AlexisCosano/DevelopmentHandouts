@@ -124,3 +124,16 @@ uint j1Window::GetScale() const
 {
 	return scale;
 }
+
+// Save & load ----------------------------------------------------------------------
+bool j1Window::Save()
+{
+	LOG("Saving module %s", name.GetString());
+	return(true);
+}
+
+bool j1Window::Load()
+{
+	LOG("Loading module %s", name.GetString());
+	return(true);
+}

@@ -160,3 +160,16 @@ void j1Input::GetMouseMotion(int& x, int& y)
 	x = mouse_motion_x;
 	y = mouse_motion_y;
 }
+
+// Save & load ----------------------------------------------------------------------
+bool j1Input::Save()
+{
+	LOG("Saving module %s", name.GetString());
+	return(true);
+}
+
+bool j1Input::Load()
+{
+	LOG("Loading module %s", name.GetString());
+	return(true);
+}

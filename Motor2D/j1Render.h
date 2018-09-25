@@ -40,6 +40,10 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	// Save & load
+	bool Save();
+	bool Load();
+
 public:
 
 	SDL_Renderer*	renderer;

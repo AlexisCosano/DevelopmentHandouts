@@ -59,25 +59,16 @@ bool j1App::Awake()
 {
 	// TODO 3: Done
 	bool ret = true;
-	pugi::xml_parse_result result = config_document.load_file("config.xml");
 	
 	
-	if (result)
+	ret = LoadFile(config_document, "config.xml");
+		
+	if (ret)
 	{
-		LOG("============= Loading document. Load result: %s ============", result.description());
-		LOG("============= Document successfully loaded ============");
-		LOG("==== Document's first child: %s ====", config_document.first_child().name());
 		config_node = config_document.child("config");
 		LOG("==== Config_node is now: %s ====", config_node.name());
+	}
 
-		ret = result;
-	}
-	else
-	{
-		LOG("========== ERROR: document not loaded. Load result: %s =========", result.description());
-		ret = false;
-	}
-		
 	p2List_item<j1Module*>* item;
 	item = modules.start;
 
@@ -88,6 +79,14 @@ bool j1App::Awake()
 		ret = item->data->Awake(config_node.child("modules").child(item->data->name.GetString()));
 		item = item->next;
 
+	}
+
+	ret = LoadFile(savefile_document, "savefile.xml");
+
+	if (ret)
+	{
+		savefile_node = savefile_document.child("save");
+		LOG("==== Savefile_node is now: %s ====", config_node.name());
 	}
 
 	return ret;
@@ -237,13 +236,53 @@ const char* j1App::GetArgv(int index) const
 		return NULL;
 }
 
+// Load file -----------------------------
+bool j1App::LoadFile(pugi::xml_document& document, const char* document_to_open)
+{
+	bool ret = true;
+	pugi::xml_parse_result result = document.load_file(document_to_open);
+
+	if (result)
+	{
+		LOG("============= Loading document %s. Load result: %s ============", document_to_open, result.description());
+		LOG("============= Document successfully loaded ============");		
+
+		ret = result;
+	}
+	else
+	{
+		LOG("========== ERROR: document %s not loaded. Load result: %s =========", document_to_open, result.description());
+		ret = false;
+	}
+
+	return(ret);
+}
+
 // Save & Load ---------------------------
 void j1App::CallSave()
 {
+	p2List_item<j1Module*>* item;
+	item = modules.start;
+
+	while (item != NULL)
+	{
+		item->data->Save();
+		item = item->next;
+	}
+
 	LOG("Saving game...");
 }
 
 void j1App::CallLoad()
 {
+	p2List_item<j1Module*>* item;
+	item = modules.start;
+
+	while (item != NULL)
+	{
+		item->data->Load();
+		item = item->next;
+	}
+
 	LOG("Loading game...");
 }

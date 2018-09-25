@@ -189,3 +189,16 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 	
 	return ret;
 }
+
+// Save & load ----------------------------------------------------------------------
+bool j1Audio::Save()
+{
+	LOG("Saving module %s", name.GetString());
+	return(true);
+}
+
+bool j1Audio::Load()
+{
+	LOG("Loading module %s", name.GetString());
+	return(true);
+}

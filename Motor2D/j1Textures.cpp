@@ -122,3 +122,16 @@ void j1Textures::GetSize(const SDL_Texture* texture, uint& width, uint& height) 
 {
 	SDL_QueryTexture((SDL_Texture*)texture, NULL, NULL, (int*) &width, (int*) &height);
 }
+
+// Save & load ----------------------------------------------------------------------
+bool j1Textures::Save()
+{
+	LOG("Saving module %s", name.GetString());
+	return(true);
+}
+
+bool j1Textures::Load()
+{
+	LOG("Loading module %s", name.GetString());
+	return(true);
+}

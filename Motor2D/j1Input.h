@@ -69,8 +69,9 @@ public:
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
 
-private:
-	void CleanKeys();
+	// Save & load
+	bool Save();
+	bool Load();
 
 private:
 

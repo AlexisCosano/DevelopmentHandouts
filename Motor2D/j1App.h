@@ -49,6 +49,9 @@ public:
 	// Call LoadGame -------------------------------------
 	void CallLoad();
 
+	// Load file -----------------------------------------
+	bool LoadFile(pugi::xml_document& document, const char* document_to_open);
+
 private:
 
 	// Call modules before each loop iteration
@@ -79,6 +82,9 @@ public:
 	// TODO 2: Done
 	pugi::xml_document config_document;
 	pugi::xml_node config_node;
+
+	pugi::xml_document savefile_document;
+	pugi::xml_node savefile_node;
 
 private:
 

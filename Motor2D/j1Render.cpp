@@ -238,3 +238,20 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 
 	return ret;
 }
+
+// Save & load ----------------------------------------------------------------------
+bool j1Render::Save()
+{
+	LOG("Saving module %s", name.GetString());
+	return(true);
+}
+
+bool j1Render::Load()
+{
+	LOG("Loading module %s", name.GetString());
+
+	camera.x = App->savefile_node.child("renderer").child("camera").attribute("x").as_int();
+	camera.y = App->savefile_node.child("renderer").child("camera").attribute("y").as_int();
+
+	return(true);
+}
