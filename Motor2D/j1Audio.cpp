@@ -69,6 +69,14 @@ bool j1Audio::Awake(pugi::xml_node& module_node)
 	return ret;
 }
 
+// Update
+bool j1Audio::Update(float dt)
+{
+	Mix_VolumeMusic(music_volume);
+
+	return(true);
+}
+
 // Called before quitting
 bool j1Audio::CleanUp()
 {
@@ -190,17 +198,33 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 	return ret;
 }
 
+// Save volume ----------------------------------------------------------------------
+void j1Audio::SaveVolume()
+{
+	if (App->savefile_node.child("audio").child("volume") == NULL)
+	{
+		App->savefile_node.child("audio").append_child("volume");
+		App->savefile_node.child("audio").child("volume").append_attribute("musicvolume").set_value(music_volume);
+	}
+	else
+	{
+		App->savefile_node.child("audio").child("volume").attribute("musicvolume").set_value(music_volume);
+	}
+}
+
 // Save & load ----------------------------------------------------------------------
 bool j1Audio::Save()
 {
 	if (App->savefile_node.child(name.GetString()) == NULL)
 	{
 		App->savefile_node.append_child(name.GetString());
+		SaveVolume();
 		App->savefile_document.save_file("savefile.xml");
 	}
 	else
 	{
-		LOG("Nothing to save yet.");
+		SaveVolume();
+		App->savefile_document.save_file("savefile.xml");
 	}
 
 	LOG("Saving module %s", name.GetString());
@@ -210,5 +234,8 @@ bool j1Audio::Save()
 bool j1Audio::Load()
 {
 	LOG("Loading module %s", name.GetString());
+
+	music_volume = App->savefile_node.child("audio").child("volume").attribute("musicvolume").as_int();
+
 	return(true);
 }

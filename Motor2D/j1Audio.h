@@ -21,6 +21,9 @@ public:
 	// Called before render is available
 	bool Awake(pugi::xml_node& module_node);
 
+	// Update
+	bool Update(float dt);
+
 	// Called before quitting
 	bool CleanUp();
 
@@ -36,6 +39,9 @@ public:
 	// Save & load
 	bool Save();
 	bool Load();
+
+	// Save audio
+	void SaveVolume();
 
 public:
 

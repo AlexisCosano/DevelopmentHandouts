@@ -66,6 +66,25 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 1;
 
+	//  Control volume --------------------------------------------------
+	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_REPEAT)
+	{
+		if (App->audio->music_volume >= App->audio->music_min_volume && App->audio->music_volume <= App->audio->music_max_volume - 1)
+		{
+			App->audio->music_volume++;
+			LOG("Volume is now: %i", App->audio->music_volume);
+		}
+	}
+		
+	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_REPEAT)
+	{
+		if (App->audio->music_volume >= App->audio->music_min_volume + 1 && App->audio->music_volume <= App->audio->music_max_volume)
+		{
+			App->audio->music_volume--;
+			LOG("Volume is now: %i", App->audio->music_volume);
+		}
+	}
+
 	App->render->Blit(img, 0, 0);
 	return true;
 }
