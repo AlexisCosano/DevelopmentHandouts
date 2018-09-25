@@ -44,6 +44,9 @@ public:
 	bool Save();
 	bool Load();
 
+private:
+	void SaveCameraPosition();
+
 public:
 
 	SDL_Renderer*	renderer;

@@ -85,7 +85,7 @@ bool j1App::Awake()
 
 	if (ret)
 	{
-		savefile_node = savefile_document.child("save");
+		savefile_node = savefile_document.child("savefile");
 		LOG("==== Savefile_node is now: %s ====", config_node.name());
 	}
 
@@ -260,7 +260,7 @@ bool j1App::LoadFile(pugi::xml_document& document, const char* document_to_open)
 
 // Save & Load ---------------------------
 void j1App::CallSave()
-{
+{	
 	p2List_item<j1Module*>* item;
 	item = modules.start;
 

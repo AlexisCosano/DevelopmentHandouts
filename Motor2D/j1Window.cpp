@@ -128,6 +128,16 @@ uint j1Window::GetScale() const
 // Save & load ----------------------------------------------------------------------
 bool j1Window::Save()
 {
+	if (App->savefile_node.child(name.GetString()) == NULL)
+	{
+		App->savefile_node.append_child(name.GetString());
+		App->savefile_document.save_file("savefile.xml");
+	}
+	else
+	{
+		LOG("Nothing to save yet.");
+	}
+
 	LOG("Saving module %s", name.GetString());
 	return(true);
 }

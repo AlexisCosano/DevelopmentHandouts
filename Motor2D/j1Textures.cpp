@@ -126,6 +126,19 @@ void j1Textures::GetSize(const SDL_Texture* texture, uint& width, uint& height) 
 // Save & load ----------------------------------------------------------------------
 bool j1Textures::Save()
 {
+	if (App->savefile_document != NULL)
+	{
+		if (App->savefile_node.child(name.GetString()) == NULL)
+		{
+			App->savefile_node.append_child(name.GetString());
+			App->savefile_document.save_file("savefile.xml");
+		}
+		else
+		{
+			LOG("Nothing to save yet.");
+		}
+	}
+
 	LOG("Saving module %s", name.GetString());
 	return(true);
 }

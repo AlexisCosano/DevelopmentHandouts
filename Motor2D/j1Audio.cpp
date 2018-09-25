@@ -193,6 +193,16 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 // Save & load ----------------------------------------------------------------------
 bool j1Audio::Save()
 {
+	if (App->savefile_node.child(name.GetString()) == NULL)
+	{
+		App->savefile_node.append_child(name.GetString());
+		App->savefile_document.save_file("savefile.xml");
+	}
+	else
+	{
+		LOG("Nothing to save yet.");
+	}
+
 	LOG("Saving module %s", name.GetString());
 	return(true);
 }

@@ -239,9 +239,40 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 	return ret;
 }
 
+// Save camera's position -----------------------------------------------------------
+void j1Render::SaveCameraPosition()
+{
+	if(App->savefile_node.child("renderer").child("camera") == NULL)
+	{ 
+		App->savefile_node.child("renderer").append_child("camera");
+		App->savefile_node.child("renderer").child("camera").append_attribute("x").set_value(camera.x);
+		App->savefile_node.child("renderer").child("camera").append_attribute("y").set_value(camera.y);
+	}
+	else
+	{
+		App->savefile_node.child("renderer").child("camera").attribute("x").set_value(camera.x);
+		App->savefile_node.child("renderer").child("camera").attribute("y").set_value(camera.y);
+	}
+}
+
 // Save & load ----------------------------------------------------------------------
 bool j1Render::Save()
 {
+	if (App->savefile_document != NULL)
+	{
+		if (App->savefile_node.child(name.GetString()) == NULL)
+		{
+			App->savefile_node.append_child(name.GetString());
+			SaveCameraPosition();
+			App->savefile_document.save_file("savefile.xml");
+		}
+		else
+		{
+			SaveCameraPosition();
+			App->savefile_document.save_file("savefile.xml");
+		}
+	}
+
 	LOG("Saving module %s", name.GetString());
 	return(true);
 }
