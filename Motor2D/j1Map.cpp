@@ -32,11 +32,12 @@ void j1Map::Draw()
 		return;
 
 	// TODO 6: done
-	p2List_item<Tileset*>* iterator = map_node->tilesets.start;
+	p2List_item<Tileset*>* iterator = map_node.tilesets.start;
 
-	for (iterator; iterator != map_node->tilesets.end; iterator->next)
+	while(iterator != NULL)
 	{
 		App->render->Blit(iterator->data->texture, 0, 0);
+		iterator = iterator->next;
 	}
 
 }
@@ -47,23 +48,23 @@ bool j1Map::CleanUp()
 	LOG("Unloading map");
 
 	// TODO 2: done
-	if (map_node->tilesets.start != NULL)
+	if (map_node.tilesets.start != NULL)
 	{
-		p2List_item<Tileset*>* iterator = map_node->tilesets.start;
+		p2List_item<Tileset*>* iterator = map_node.tilesets.start;
 
-		for (iterator; iterator != map_node->tilesets.end; iterator->next)
+		while(iterator != NULL)
 		{
 			RELEASE(iterator->data);
+			iterator = iterator->next;
 		}
 
-		map_node->tilesets.clear();
+		map_node.tilesets.clear();
 	}
 	else
 	{
-		map_node->tilesets.clear();
+		map_node.tilesets.clear();
 	}	
 
-	RELEASE(map_node);
 	map_file.reset();
 
 	return true;
@@ -76,40 +77,40 @@ bool j1Map::LoadMapData()
 
 	if (map_file_mapnode != NULL)
 	{
-		map_node->width = map_file_mapnode.attribute("width").as_int();
-		map_node->height = map_file_mapnode.attribute("height").as_int();
+		map_node.width = map_file_mapnode.attribute("width").as_int();
+		map_node.height = map_file_mapnode.attribute("height").as_int();
 
-		map_node->tile_width = map_file_mapnode.attribute("tilewidth").as_int();
-		map_node->tile_height = map_file_mapnode.attribute("tileheight").as_int();
+		map_node.tile_width = map_file_mapnode.attribute("tilewidth").as_int();
+		map_node.tile_height = map_file_mapnode.attribute("tileheight").as_int();
 
-		map_node->next_object_id = map_file_mapnode.attribute("nextobjectid").as_int();
+		map_node.next_object_id = map_file_mapnode.attribute("nextobjectid").as_int();
 
 		const char* orientation_tmp = map_file_mapnode.attribute("orientation").as_string();
 		if (orientation_tmp == "orthogonal")
 		{
-			map_node->orientation = ORTHOGONAL;
+			map_node.orientation = ORTHOGONAL;
 		}
 		else if (orientation_tmp == "isometric")
 		{
-			map_node->orientation = ISOMETRIC;
+			map_node.orientation = ISOMETRIC;
 		}
 
 		const char* render_order_tmp = map_file_mapnode.attribute("orientation").as_string();
 		if (render_order_tmp == "left-up")
 		{
-			map_node->render_order = LEFT_UP;
+			map_node.render_order = LEFT_UP;
 		}
 		else if (render_order_tmp == "left-down")
 		{
-			map_node->render_order = LEFT_DOWN;
+			map_node.render_order = LEFT_DOWN;
 		}
 		else if (render_order_tmp == "right-up")
 		{
-			map_node->render_order = RIGHT_UP;
+			map_node.render_order = RIGHT_UP;
 		}
 		else if (render_order_tmp == "right-down")
 		{
-			map_node->render_order = RIGHT_DOWN;
+			map_node.render_order = RIGHT_DOWN;
 		}
 
 		LOG("Map data successfuly loaded.");
@@ -173,8 +174,13 @@ bool j1Map::Load(const char* file_name)
 		for (pugi::xml_node map_file_tilesetnode = map_file.child("map").child("tileset"); map_file_tilesetnode; map_file_tilesetnode = map_file_tilesetnode.next_sibling("tileset"))
 		{
 			Tileset* tileset_to_load = new Tileset();
-			ret = LoadTilesetData(map_file_tilesetnode, tileset_to_load);
-			map_node->tilesets.add(tileset_to_load);
+
+			if (ret == true)
+			{
+				ret = LoadTilesetData(map_file_tilesetnode, tileset_to_load);
+			}
+			
+			map_node.tilesets.add(tileset_to_load);
 		}
 	}
 	
@@ -189,17 +195,18 @@ bool j1Map::Load(const char* file_name)
 	if(ret == true)
 	{
 		// TODO 5: done
-		LOG("The file -%s- has been successfully loaded.", map_file.name);
-		LOG("Width: %i   Hieght: %i", map_node->width, map_node->height);
-		LOG("Tile widht: %i    Tile height: %i", map_node->tile_width, map_node->tile_height);
-		p2List_item<Tileset*>* iterator = map_node->tilesets.start;
+		LOG("The file -%s- has been successfully loaded.", file_name);
+		LOG("Width: %i   Height: %i", map_node.width, map_node.height);
+		LOG("Tile width: %i    Tile height: %i", map_node.tile_width, map_node.tile_height);
+		p2List_item<Tileset*>* iterator = map_node.tilesets.start;
 
-		for (iterator; iterator != map_node->tilesets.end; iterator->next)
+		while (iterator != NULL)
 		{
 			LOG("Tileset ----");
 			LOG("Name: %s    Firstgid: %i", iterator->data->name, iterator->data->firstgid);
 			LOG("Tile width: %i     Tile height: %i", iterator->data->tile_width, iterator->data->tile_height);
 			LOG("Spacing: %i    Margin: %i", iterator->data->spacing, iterator->data->margin);
+			iterator = iterator->next;
 		}
 	}
 

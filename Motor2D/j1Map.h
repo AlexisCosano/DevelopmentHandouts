@@ -87,9 +87,9 @@ private:
 public:
 
 	// TODO 1: done
-	MapNode* map_node = nullptr;
-	Tileset* tileset = nullptr;
-	Layer* layer = nullptr;
+	MapNode map_node;
+	Tileset tileset;
+	Layer layer;
 
 private:
 

@@ -89,7 +89,7 @@ bool j1App::Awake()
 	if (ret)
 	{
 		savefile_node = savefile_document.child("savefile");
-		LOG("==== Savefile_node is now: %s ====", config_node.name());
+		LOG("==== Savefile_node is now: %s ====", savefile_node.name());
 	}
 
 	return ret;

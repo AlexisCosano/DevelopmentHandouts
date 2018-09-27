@@ -32,6 +32,7 @@ bool j1Scene::Start()
 {
 	img = App->tex->Load("textures/test.png");
 	App->audio->PlayMusic("audio/music/music_sadpiano.ogg");
+	App->map->Load("maps/maptest.tmx");
 	return true;
 }
 
@@ -87,13 +88,14 @@ bool j1Scene::Update(float dt)
 	}
 
 	//App->render->Blit(img, 0, 0);
+
 	// TODO 7: done
 	App->map->Draw();
 
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
-		App->map->map_node->width, App->map->map_node->height,
-		App->map->map_node->tile_width, App->map->map_node->height,
-		App->map->map_node->tilesets.count());
+		App->map->map_node.width, App->map->map_node.height,
+		App->map->map_node.tile_width, App->map->map_node.tile_height,
+		App->map->map_node.tilesets.count());
 
 	App->win->SetTitle(title.GetString());
 	return true;
