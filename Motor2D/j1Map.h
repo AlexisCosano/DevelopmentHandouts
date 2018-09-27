@@ -18,6 +18,14 @@ struct Tileset
 	int margin = 0;
 };
 
+struct Layer
+{
+	int layer_id = 0;
+	const char* name = nullptr;
+	int width = 0;
+	int height = 0;
+};
+
 // TODO 1: done
 enum Orientation
 {
@@ -35,8 +43,11 @@ enum RenderOrder
 
 struct MapNode
 {
-	Orientation* orientation = nullptr;
-	RenderOrder* render_order = nullptr;
+	Orientation orientation;
+	RenderOrder render_order;
+
+	p2List<Tileset*> tilesets;
+	p2List<Layer*> layers;
 
 	int width = 0;
 	int height = 0;
@@ -68,11 +79,16 @@ public:
 	bool Load(const char* path);
 
 private:
-
+	bool LoadMapData();
+	bool LoadTilesetData(const pugi::xml_node& map_file_tilesetnode, Tileset* tileset_to_load);
+	bool LoadLayerData();
 
 public:
 
-	// TODO 1: Add your struct for map info as public for now
+	// TODO 1: done
+	MapNode* map_node = nullptr;
+	Tileset* tileset = nullptr;
+	Layer* layer = nullptr;
 
 private:
 
