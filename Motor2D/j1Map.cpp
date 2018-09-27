@@ -39,7 +39,6 @@ void j1Map::Draw()
 		App->render->Blit(iterator->data->texture, 0, 0);
 		iterator = iterator->next;
 	}
-
 }
 
 // Called before quitting
@@ -132,9 +131,13 @@ bool j1Map::LoadTilesetData(const pugi::xml_node& map_file_tilesetnode, Tileset*
 		tileset_to_load->firstgid = map_file_tilesetnode.attribute("firstgid").as_int();
 		tileset_to_load->margin = map_file_tilesetnode.attribute("margin").as_int();
 		tileset_to_load->spacing = map_file_tilesetnode.attribute("spacing").as_int();
-		tileset_to_load->tile_width = map_file_tilesetnode.attribute("tile_width").as_int();
-		tileset_to_load->tile_height = map_file_tilesetnode.attribute("tile_height").as_int();
-		tileset_to_load->texture = App->tex->Load(map_file_tilesetnode.child("image").attribute("source").as_string());
+		tileset_to_load->tile_width = map_file_tilesetnode.attribute("tilewidth").as_int();
+		tileset_to_load->tile_height = map_file_tilesetnode.attribute("tileheight").as_int();
+
+		p2SString image = "maps/";
+		image += map_file_tilesetnode.child("image").attribute("source").as_string();
+		LOG("Image loaded: %s", image.GetString());
+		tileset_to_load->texture = App->tex->Load(image.GetString());
 
 		LOG("Tileset loaded correctly.");
 		return(true);
