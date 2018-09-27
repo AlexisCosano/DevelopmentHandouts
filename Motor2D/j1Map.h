@@ -11,6 +11,7 @@
 struct Tileset
 {
 	const char* name = nullptr;
+	SDL_Texture* texture = nullptr;
 	int firstgid = 0;
 	int tile_width = 0;
 	int tile_height = 0;
@@ -81,7 +82,7 @@ public:
 private:
 	bool LoadMapData();
 	bool LoadTilesetData(const pugi::xml_node& map_file_tilesetnode, Tileset* tileset_to_load);
-	bool LoadLayerData();
+	//bool LoadLayerData();
 
 public:
 

@@ -31,8 +31,13 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
-	// TODO 6: Iterate all tilesets and draw all their 
-	// images in 0,0 (you should have only one tileset for now)
+	// TODO 6: done
+	p2List_item<Tileset*>* iterator = map_node->tilesets.start;
+
+	for (iterator; iterator != map_node->tilesets.end; iterator->next)
+	{
+		App->render->Blit(iterator->data->texture, 0, 0);
+	}
 
 }
 
@@ -128,6 +133,7 @@ bool j1Map::LoadTilesetData(const pugi::xml_node& map_file_tilesetnode, Tileset*
 		tileset_to_load->spacing = map_file_tilesetnode.attribute("spacing").as_int();
 		tileset_to_load->tile_width = map_file_tilesetnode.attribute("tile_width").as_int();
 		tileset_to_load->tile_height = map_file_tilesetnode.attribute("tile_height").as_int();
+		tileset_to_load->texture = App->tex->Load(map_file_tilesetnode.child("image").attribute("source").as_string());
 
 		LOG("Tileset loaded correctly.");
 		return(true);
