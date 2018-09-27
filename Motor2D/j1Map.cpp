@@ -150,6 +150,22 @@ bool j1Map::LoadTilesetData(const pugi::xml_node& map_file_tilesetnode, Tileset*
 }
 
 // Load layer's data -------------------------------------------------------------
+bool j1Map::LoadLayerData(const pugi::xml_node& map_file_layernode, Layer* layer_to_load)
+{
+	if (layer_to_load != NULL)
+	{
+		layer_to_load->name = map_file_layernode.attribute("name").as_string();
+		layer_to_load->width = map_file_layernode.attribute("width").as_int();
+		layer_to_load->height = map_file_layernode.attribute("height").as_int();
+		LOG("Successfully loaded all the layer's data.");
+		return(true);
+	}
+	else
+	{
+		LOG("There isn't any layers.");
+		return(false);
+	}
+}
 
 // Load new map
 bool j1Map::Load(const char* file_name)
@@ -187,13 +203,21 @@ bool j1Map::Load(const char* file_name)
 		}
 	}
 	
-	/*
 	if (ret == true)
 	{
 		// loading the layers
-		ret = LoadLayerData();
+		for (pugi::xml_node map_file_layernode = map_file.child("map").child("layer"); map_file_layernode; map_file_layernode = map_file_layernode.next_sibling("layer"))
+		{
+			Layer* layer_to_load = new Layer();
+
+			if (ret == true)
+			{
+				ret = LoadLayerData(map_file_layernode, layer_to_load);
+			}
+
+			map_node.layers.add(layer_to_load);
+		}
 	}
-	*/
 
 	if(ret == true)
 	{
@@ -201,6 +225,7 @@ bool j1Map::Load(const char* file_name)
 		LOG("The file -%s- has been successfully loaded.", file_name);
 		LOG("Width: %i   Height: %i", map_node.width, map_node.height);
 		LOG("Tile width: %i    Tile height: %i", map_node.tile_width, map_node.tile_height);
+		
 		p2List_item<Tileset*>* iterator = map_node.tilesets.start;
 
 		while (iterator != NULL)
@@ -210,6 +235,16 @@ bool j1Map::Load(const char* file_name)
 			LOG("Tile width: %i     Tile height: %i", iterator->data->tile_width, iterator->data->tile_height);
 			LOG("Spacing: %i    Margin: %i", iterator->data->spacing, iterator->data->margin);
 			iterator = iterator->next;
+		}
+
+		p2List_item<Layer*>* iterator2 = map_node.layers.start;
+
+		while (iterator2 != NULL)
+		{
+			LOG("Layer ----");
+			LOG("Name: %s", iterator2->data->name);
+			LOG("Width: %i     Height: %i", iterator2->data->width, iterator2->data->height);
+			iterator2 = iterator2->next;
 		}
 	}
 

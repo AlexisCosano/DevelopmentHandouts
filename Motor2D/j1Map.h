@@ -21,7 +21,6 @@ struct Tileset
 
 struct Layer
 {
-	int layer_id = 0;
 	const char* name = nullptr;
 	int width = 0;
 	int height = 0;
@@ -82,7 +81,7 @@ public:
 private:
 	bool LoadMapData();
 	bool LoadTilesetData(const pugi::xml_node& map_file_tilesetnode, Tileset* tileset_to_load);
-	//bool LoadLayerData();
+	bool LoadLayerData(const pugi::xml_node& map_file_layernode, Layer* layer_to_load);
 
 public:
 
