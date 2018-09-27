@@ -182,8 +182,19 @@ bool j1Map::Load(const char* file_name)
 
 	if(ret == true)
 	{
-		// TODO 5: LOG all the data loaded
-		// iterate all tilesets and LOG everything
+		// TODO 5: done
+		LOG("The file -%s- has been successfully loaded.", map_file.name);
+		LOG("Width: %i   Hieght: %i", map_node->width, map_node->height);
+		LOG("Tile widht: %i    Tile height: %i", map_node->tile_width, map_node->tile_height);
+		p2List_item<Tileset*>* iterator = map_node->tilesets.start;
+
+		for (iterator; iterator != map_node->tilesets.end; iterator->next)
+		{
+			LOG("Tileset ----");
+			LOG("Name: %s    Firstgid: %i", iterator->data->name, iterator->data->firstgid);
+			LOG("Tile width: %i     Tile height: %i", iterator->data->tile_width, iterator->data->tile_height);
+			LOG("Spacing: %i    Margin: %i", iterator->data->spacing, iterator->data->margin);
+		}
 	}
 
 	map_loaded = ret;
