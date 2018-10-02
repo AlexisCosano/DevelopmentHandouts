@@ -5,11 +5,15 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include "p2DynArray.h"
+
 
 // TODO 2: done
 // ----------------------------------------------------
 struct Tileset
 {
+	SDL_Rect GetTileRect(int id) const;
+
 	const char* name = nullptr;
 	SDL_Texture* texture = nullptr;
 	int firstgid = 0;
@@ -17,6 +21,10 @@ struct Tileset
 	int tile_height = 0;
 	int spacing = 0;
 	int margin = 0;
+	int	tex_width = 0;
+	int	tex_height = 0;
+	int	num_tiles_width = 0;
+	int	num_tiles_height = 0;
 };
 
 struct Layer
@@ -24,6 +32,7 @@ struct Layer
 	const char* name = nullptr;
 	int width = 0;
 	int height = 0;
+	uint* encoding = nullptr;
 };
 
 // TODO 1: done
@@ -81,6 +90,7 @@ public:
 private:
 	bool LoadMapData();
 	bool LoadTilesetData(const pugi::xml_node& map_file_tilesetnode, Tileset* tileset_to_load);
+	bool LoadTilesetImage(const pugi::xml_node& tileset, Tileset* given_tileset);
 	bool LoadLayerData(const pugi::xml_node& map_file_layernode, Layer* layer_to_load);
 
 public:

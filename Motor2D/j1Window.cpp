@@ -144,6 +144,7 @@ bool j1Window::Save()
 
 bool j1Window::Load()
 {
+	// Gotta put something here, big boy. What about window's title? ==============================================
 	LOG("Loading module %s", name.GetString());
 	return(true);
 }

@@ -31,7 +31,10 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
-	// TODO 6: done
+
+
+	/*
+	// TODO 6: done ======= Painting the tileset on 0,0
 	p2List_item<Tileset*>* iterator = map_node.tilesets.start;
 
 	while(iterator != NULL)
@@ -39,6 +42,7 @@ void j1Map::Draw()
 		App->render->Blit(iterator->data->texture, 0, 0);
 		iterator = iterator->next;
 	}
+	*/
 }
 
 // Called before quitting
@@ -58,10 +62,22 @@ bool j1Map::CleanUp()
 		}
 
 		map_node.tilesets.clear();
+
+
+		p2List_item<Layer*>* iterator2 = map_node.layers.start;
+
+		while (iterator2 != NULL)
+		{
+			RELEASE(iterator2->data);
+			iterator2 = iterator2->next;
+		}
+
+		map_node.layers.clear();
 	}
 	else
 	{
 		map_node.tilesets.clear();
+		map_node.layers.clear();
 	}	
 
 	map_file.reset();
@@ -122,6 +138,20 @@ bool j1Map::LoadMapData()
 	}
 }
 
+// Get tile's rect
+SDL_Rect Tileset::GetTileRect(int id) const
+{
+	int relative_id = id - firstgid;
+	SDL_Rect rect;
+
+	rect.w = tile_width;
+	rect.h = tile_height;
+	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
+	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
+
+	return(rect);
+}
+
 // Load tileset's data -----------------------------------------------------------
 bool j1Map::LoadTilesetData(const pugi::xml_node& map_file_tilesetnode, Tileset* tileset_to_load)
 {
@@ -134,11 +164,7 @@ bool j1Map::LoadTilesetData(const pugi::xml_node& map_file_tilesetnode, Tileset*
 		tileset_to_load->tile_width = map_file_tilesetnode.attribute("tilewidth").as_int();
 		tileset_to_load->tile_height = map_file_tilesetnode.attribute("tileheight").as_int();
 
-		p2SString image = "maps/";
-		image += map_file_tilesetnode.child("image").attribute("source").as_string();
-		LOG("Image loaded: %s", image.GetString());
-		tileset_to_load->texture = App->tex->Load(image.GetString());
-
+		
 		LOG("Tileset loaded correctly.");
 		return(true);
 	}
@@ -149,6 +175,43 @@ bool j1Map::LoadTilesetData(const pugi::xml_node& map_file_tilesetnode, Tileset*
 	}
 }
 
+// Load tileset's image
+bool j1Map::LoadTilesetImage(const pugi::xml_node& tileset, Tileset* given_tileset)
+{
+	bool ret = true;
+	pugi::xml_node image = tileset.child("image");
+
+	if (image == NULL)
+	{
+		LOG("Error parsing tileset xml file: Cannot find 'image' tag.");
+		ret = false;
+	}
+	else
+	{
+		given_tileset->texture = App->tex->Load(PATH("maps/", image.attribute("source").as_string()));
+		int w, h;
+		SDL_QueryTexture(given_tileset->texture, NULL, NULL, &w, &h);
+		given_tileset->tex_width = image.attribute("width").as_int();
+
+		if (given_tileset->tex_width <= 0)
+		{
+			given_tileset->tex_width = w;
+		}
+
+		given_tileset->tex_height = image.attribute("height").as_int();
+
+		if (given_tileset->tex_height <= 0)
+		{
+			given_tileset->tex_height = h;
+		}
+
+		given_tileset->num_tiles_width = given_tileset->tex_width / given_tileset->tile_width;
+		given_tileset->num_tiles_height = given_tileset->tex_height / given_tileset->tile_height;
+	}
+
+	return ret;
+}
+
 // Load layer's data -------------------------------------------------------------
 bool j1Map::LoadLayerData(const pugi::xml_node& map_file_layernode, Layer* layer_to_load)
 {
@@ -157,12 +220,23 @@ bool j1Map::LoadLayerData(const pugi::xml_node& map_file_layernode, Layer* layer
 		layer_to_load->name = map_file_layernode.attribute("name").as_string();
 		layer_to_load->width = map_file_layernode.attribute("width").as_int();
 		layer_to_load->height = map_file_layernode.attribute("height").as_int();
+
+		int amount_of_data = 0;
+		int data_size = 0;
+
+		p2DynArray<uint*>* encoding_data;
+
+		
+		//*layer_to_load->encoding = map_file_layernode.child("data").first_child().first_attribute().as_uint();
+		LOG("what ih this encoding shit?: %d", layer_to_load->encoding);
+
+		memset(layer_to_load->encoding, amount_of_data, data_size);
 		LOG("Successfully loaded all the layer's data.");
 		return(true);
 	}
 	else
 	{
-		LOG("There isn't any layers.");
+		LOG("There aren't any layers.");
 		return(false);
 	}
 }
@@ -197,6 +271,11 @@ bool j1Map::Load(const char* file_name)
 			if (ret == true)
 			{
 				ret = LoadTilesetData(map_file_tilesetnode, tileset_to_load);
+			}
+
+			if (ret == true)
+			{
+				ret = LoadTilesetImage(map_file_tilesetnode, tileset_to_load);
 			}
 			
 			map_node.tilesets.add(tileset_to_load);
