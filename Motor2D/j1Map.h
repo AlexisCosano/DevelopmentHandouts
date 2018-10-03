@@ -32,7 +32,7 @@ struct Layer
 	const char* name = nullptr;
 	int width = 0;
 	int height = 0;
-	uint* encoding = nullptr;
+	uint* data = nullptr;
 };
 
 // TODO 1: done

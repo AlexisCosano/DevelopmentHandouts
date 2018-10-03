@@ -221,16 +221,21 @@ bool j1Map::LoadLayerData(const pugi::xml_node& map_file_layernode, Layer* layer
 		layer_to_load->width = map_file_layernode.attribute("width").as_int();
 		layer_to_load->height = map_file_layernode.attribute("height").as_int();
 
-		int amount_of_data = 0;
-		int data_size = 0;
 
-		p2DynArray<uint*>* encoding_data;
+		pugi::xml_node layer_data_node = map_file_layernode.child("data");
 
-		
-		//*layer_to_load->encoding = map_file_layernode.child("data").first_child().first_attribute().as_uint();
-		LOG("what ih this encoding shit?: %d", layer_to_load->encoding);
+		layer_to_load->data = new uint[layer_to_load->width * layer_to_load->height];
+		memset(layer_to_load->data, 0, layer_to_load->width * layer_to_load->height);
 
-		memset(layer_to_load->encoding, amount_of_data, data_size);
+		int i = 0;
+
+		for (pugi::xml_node tile_data_node = layer_data_node.child("tile"); tile_data_node; tile_data_node = tile_data_node.next_sibling("tile"))
+		{
+			layer_to_load->data[i] = tile_data_node.attribute("gid").as_int();
+			LOG("This id is %i", layer_to_load->data[i]);
+			i++;
+		}
+
 		LOG("Successfully loaded all the layer's data.");
 		return(true);
 	}
