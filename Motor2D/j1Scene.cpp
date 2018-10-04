@@ -32,7 +32,7 @@ bool j1Scene::Start()
 {
 	img = App->tex->Load("textures/test.png");
 	App->audio->PlayMusic("audio/music/music_sadpiano.ogg");
-	App->map->Load("maps/hello2.tmx");
+	App->map->Load("maps/A.tmx");
 	return true;
 }
 

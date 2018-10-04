@@ -29,10 +29,13 @@ struct Tileset
 
 struct Layer
 {
+	inline uint GetXY(int x, int y) const;
+
 	const char* name = nullptr;
 	int width = 0;
 	int height = 0;
 	uint* data = nullptr;
+	Tileset* layer_tileset = nullptr;
 };
 
 // TODO 1: done
@@ -86,6 +89,8 @@ public:
 
 	// Load new map
 	bool Load(const char* path);
+
+	iPoint MapToWorldPosition(int x, int y);
 
 private:
 	bool LoadMapData();

@@ -31,18 +31,24 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
+	Layer* layer_to_draw = map_node.layers.start->data;
 
-
-	/*
-	// TODO 6: done ======= Painting the tileset on 0,0
-	p2List_item<Tileset*>* iterator = map_node.tilesets.start;
-
-	while(iterator != NULL)
+	for (int y = 0; y < map_node.height; ++y)
 	{
-		App->render->Blit(iterator->data->texture, 0, 0);
-		iterator = iterator->next;
+		for (int x = 0; x < map_node.width; ++x)
+		{
+			int tile_id = layer_to_draw->GetXY(x, y);
+			if (tile_id > 0)
+			{
+				Tileset* tileset_to_draw = map_node.tilesets.start->data;
+
+				SDL_Rect tile_rect = tileset_to_draw->GetTileRect(tile_id);
+				iPoint world_position = MapToWorldPosition(x, y);
+
+				App->render->Blit(tileset_to_draw->texture, world_position.x, world_position.y, &tile_rect);
+			}
+		}
 	}
-	*/
 }
 
 // Called before quitting
@@ -152,6 +158,32 @@ SDL_Rect Tileset::GetTileRect(int id) const
 	return(rect);
 }
 
+// Get X and Y from a vector
+inline uint Layer::GetXY(int x, int y) const
+{
+	return(data[x + (y*height)]);
+}
+
+// Position from map to world
+iPoint j1Map::MapToWorldPosition(int x, int y)
+{
+	iPoint world_vector;
+
+	if (map_node.orientation == ORTHOGONAL)
+	{
+		world_vector.x = x * map_node.tile_width;
+		world_vector.y = y * map_node.tile_height;
+	}
+	else
+	{
+		LOG("This type of map (%s) is not supported.", map_node.orientation);
+		world_vector.x = x; 
+		world_vector.y = y;
+	}
+
+	return (world_vector);
+}
+
 // Load tileset's data -----------------------------------------------------------
 bool j1Map::LoadTilesetData(const pugi::xml_node& map_file_tilesetnode, Tileset* tileset_to_load)
 {
@@ -209,7 +241,7 @@ bool j1Map::LoadTilesetImage(const pugi::xml_node& tileset, Tileset* given_tiles
 		given_tileset->num_tiles_height = given_tileset->tex_height / given_tileset->tile_height;
 	}
 
-	return ret;
+	return(ret);
 }
 
 // Load layer's data -------------------------------------------------------------
@@ -294,12 +326,16 @@ bool j1Map::Load(const char* file_name)
 		{
 			Layer* layer_to_load = new Layer();
 
+			ret = LoadLayerData(map_file_layernode, layer_to_load);
+
 			if (ret == true)
 			{
-				ret = LoadLayerData(map_file_layernode, layer_to_load);
+				map_node.layers.add(layer_to_load);
 			}
-
-			map_node.layers.add(layer_to_load);
+			else
+			{
+				LOG("Couldn't load the map's layers.");
+			}
 		}
 	}
 
